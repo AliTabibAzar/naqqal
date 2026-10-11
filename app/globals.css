@@ -1,0 +1,173 @@
+@import "tailwindcss";
+
+:root {
+  --void: #0a0e1a;
+  --void-2: #0d1220;
+  --panel: #141b2d;
+  --panel-2: #1a2338;
+  --bone: #e8e0d4;
+  --bone-dim: #b8ae9f;
+  --gold: #d4a853;
+  --gold-bright: #f0c878;
+  --blood: #c44e52;
+  --magic: #7b5ea7;
+  --line: rgba(212, 168, 83, 0.15);
+  --line-strong: rgba(212, 168, 83, 0.35);
+}
+
+@theme inline {
+  --color-void: var(--void);
+  --color-void-2: var(--void-2);
+  --color-panel: var(--panel);
+  --color-panel-2: var(--panel-2);
+  --color-bone: var(--bone);
+  --color-bone-dim: var(--bone-dim);
+  --color-gold: var(--gold);
+  --color-gold-bright: var(--gold-bright);
+  --color-blood: var(--blood);
+  --color-magic: var(--magic);
+  --color-line: var(--line);
+  --color-line-strong: var(--line-strong);
+  --font-sans: var(--font-vazirmatn), system-ui, sans-serif;
+  --font-display: var(--font-lalezar), var(--font-vazirmatn), cursive;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--void);
+  color: var(--bone);
+  font-family: var(--font-vazirmatn), system-ui, sans-serif;
+  overflow-x: hidden;
+}
+
+::selection {
+  background: rgba(212, 168, 83, 0.35);
+  color: #fff;
+}
+
+/* ── اسکرول‌بار سینمایی ── */
+::-webkit-scrollbar {
+  width: 10px;
+}
+::-webkit-scrollbar-track {
+  background: var(--void);
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(212, 168, 83, 0.25);
+  border-radius: 6px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(212, 168, 83, 0.4);
+}
+
+/* ── انیمیشن‌ها ── */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  10% { transform: translateX(-8px) rotate(-0.5deg); }
+  20% { transform: translateX(7px) rotate(0.4deg); }
+  30% { transform: translateX(-6px) rotate(-0.3deg); }
+  40% { transform: translateX(5px) rotate(0.3deg); }
+  50% { transform: translateX(-4px); }
+  60% { transform: translateX(3px); }
+  70% { transform: translateX(-2px); }
+  80% { transform: translateX(1px); }
+}
+@keyframes glowPulse {
+  0%, 100% { box-shadow: 0 0 12px rgba(212, 168, 83, 0.3); }
+  50% { box-shadow: 0 0 28px rgba(212, 168, 83, 0.6); }
+}
+@keyframes titleIn {
+  0% { opacity: 0; letter-spacing: 0.6em; filter: blur(8px); }
+  100% { opacity: 1; letter-spacing: 0.2em; filter: blur(0); }
+}
+@keyframes heartPulse {
+  0%, 100% { opacity: 0.55; }
+  50% { opacity: 1; }
+}
+@keyframes glitchShift {
+  0%, 100% { transform: translate(0); }
+  20% { transform: translate(-3px, 1px); }
+  40% { transform: translate(3px, -1px); }
+  60% { transform: translate(-2px, -2px); }
+  80% { transform: translate(2px, 2px); }
+}
+.anim-shake-fast {
+  animation: glitchShift 0.18s linear infinite;
+}
+
+@keyframes grain {
+  0%, 100% { transform: translate(0, 0); }
+  10% { transform: translate(-5%, -10%); }
+  20% { transform: translate(-15%, 5%); }
+  30% { transform: translate(7%, -25%); }
+  40% { transform: translate(-5%, 25%); }
+  50% { transform: translate(-15%, 10%); }
+  60% { transform: translate(15%, 0%); }
+  70% { transform: translate(0%, 15%); }
+  80% { transform: translate(3%, 35%); }
+  90% { transform: translate(-10%, 10%); }
+}
+.anim-grain {
+  animation: grain 0.8s steps(10) infinite;
+}
+
+@keyframes aberration {
+  0%, 100% { text-shadow: -2px 0 #ff004088, 2px 0 #00c8ff88; }
+  25% { text-shadow: 2px 0 #ff004088, -2px 0 #00c8ff88; }
+  50% { text-shadow: -1px -1px #ff004088, 1px 1px #00c8ff88; }
+  75% { text-shadow: 1px -1px #ff004088, -1px 1px #00c8ff88; }
+}
+.anim-aberration {
+  animation: aberration 0.15s steps(2) infinite;
+}
+
+@keyframes openingFade {
+  from { opacity: 0; filter: blur(6px); }
+  to { opacity: 1; filter: blur(0); }
+}
+.anim-opening {
+  animation: openingFade 1.8s ease both;
+}
+
+.anim-fade-in { animation: fadeIn 0.6s ease both; }
+.anim-fade-up { animation: fadeUp 0.6s ease both; }
+.anim-shake { animation: shake 0.6s ease; }
+.anim-glow { animation: glowPulse 2.4s ease-in-out infinite; }
+.anim-title { animation: titleIn 1s ease both; }
+
+/* تینت‌های وضعیت */
+.tint-poison { background: radial-gradient(ellipse at center, transparent 40%, rgba(60, 160, 80, 0.22) 100%); }
+.tint-fear { background: radial-gradient(ellipse at center, transparent 30%, rgba(90, 20, 40, 0.35) 100%); }
+.tint-magic { background: radial-gradient(ellipse at center, transparent 40%, rgba(123, 94, 167, 0.25) 100%); }
+.tint-cold { background: radial-gradient(ellipse at center, transparent 40%, rgba(80, 140, 200, 0.2) 100%); }
+.tint-blood { background: radial-gradient(ellipse at center, transparent 20%, rgba(196, 78, 82, 0.3) 100%); }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

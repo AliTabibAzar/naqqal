@@ -33,7 +33,7 @@ export default function Home() {
             پلتفرم داستان‌های تعاملی
           </p>
           <h1 className="font-display text-5xl md:text-7xl text-gold drop-shadow-[0_0_30px_rgba(212,168,83,0.3)]">
-            سایه‌های روایت
+            نقال
           </h1>
           <p className="mx-auto mt-4 max-w-xl text-bone-dim leading-relaxed">
             هر تصمیم، دنیای داستان رو عوض می‌کنه. انتخاب با توئه — عواقبش هم همین‌طور.

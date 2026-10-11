@@ -4,7 +4,7 @@ export const akademiCh1: Story = {
   id: "akademi-sahr-ch1",
   title: "آکادمی سحر — فصل ۱: ورود",
   description: "شب اول توی آکادمی. مراسم تقسیم، اولین دوست، و اولین راز.",
-  author: "سایه‌های روایت",
+  author: "نقال",
   tags: ["جادو", "مدرسه", "ماوراء"],
   worldId: "akademi-sahr",
   startNode: "arrival",

@@ -4,7 +4,7 @@ export const akademiCh2: Story = {
   id: "akademi-sahr-ch2",
   title: "آکادمی سحر — فصل ۲: شب اولین راز",
   description: "هفته‌ی اول تموم شده. کاوه صدات زده — کتابخونه، نیمه‌شب.",
-  author: "سایه‌های روایت",
+  author: "نقال",
   tags: ["جادو", "مدرسه", "ماوراء"],
   worldId: "akademi-sahr",
   startNode: "week_later",

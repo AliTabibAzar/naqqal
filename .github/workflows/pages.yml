@@ -1,0 +1,66 @@
+# بیلد استاتیک + دیپلوی خودکار به GitHub Pages با هر push به main
+# پیش‌نیاز (یک‌بار، توی مرورگر): ریپو → Settings → Pages → Source: GitHub Actions
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install
+        run: npm ci
+
+      - name: Validate stories
+        run: npm run validate:story
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Generate scene manifest (with Pages base path)
+        run: npm run scenes
+        env:
+          BASE_PATH: /naqqal
+
+      - name: Static build
+        run: npm run build
+        env:
+          NAQQAL_STATIC: "1"
+          NAQQAL_BASE_PATH: /naqqal
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./out
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy
+        id: deployment
+        uses: actions/deploy-pages@v4

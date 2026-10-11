@@ -1,14 +1,13 @@
 import { notFound } from "next/navigation";
-import { getStory } from "@/lib/story";
+import { getStory, getAllStoryIds } from "@/lib/story";
 import { getWorldOfStory } from "@/lib/world";
 import StoryReader from "@/components/StoryReader";
 
-// این مسیر بر اساس params داده لود می‌کنه؛ به‌صورت blocking رندر می‌شه
-// (طبق مستندات Next.js 16 — instant-shell-url-data)
-export const instant = false;
-
+// این مسیر بر اساس params داده لود می‌کنه.
+// (فلگ instant حذف شده تا با خروجی استاتیک سازگار باشه — همه‌چیز موقع بیلد رندر می‌شه)
 export function generateStaticParams() {
-  return [{ id: "sahar-geyrat" }];
+  // همه‌ی داستان‌ها شامل فصل‌های دنیا — لازم برای خروجی استاتیک (GitHub Pages)
+  return getAllStoryIds().map((id) => ({ id }));
 }
 
 export default async function StoryPage({

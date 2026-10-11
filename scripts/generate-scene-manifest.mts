@@ -9,6 +9,8 @@
  *   موسیقی: public/music/{storyId}/{key}.mp3  (key = mood یا nodeId)
  *
  * اجرا: npm run scenes
+ * برای GitHub Pages (سرو زیرمسیر /naqqal):
+ *   BASE_PATH=/naqqal npm run scenes
  */
 import { readdirSync, writeFileSync, existsSync, mkdirSync } from "node:fs";
 import { join, dirname } from "node:path";
@@ -20,6 +22,10 @@ const SCENES_DIR = join(ROOT, "public", "scenes");
 const COVERS_DIR = join(ROOT, "public", "covers");
 const MUSIC_DIR = join(ROOT, "public", "music");
 const OUT = join(ROOT, "lib", "scene-manifest.ts");
+
+// پیشوند مسیر برای هاست زیرمسیری (مثل GitHub Pages: /naqqal)
+// تگ‌های <img> دستی basePath نکست رو خودکار نمی‌گیرن، پس اینجا اضافه می‌کنیم.
+const BASE = (process.env.BASE_PATH ?? "").replace(/\/$/, "");
 
 const IMAGE_EXTS = new Set([".webp", ".jpg", ".jpeg", ".png"]);
 const VIDEO_EXTS = new Set([".mp4", ".webm"]);
@@ -55,9 +61,9 @@ function scan(): Manifest {
           const key = `${storyId}/${nodeId}`;
           if (!scenes[key]) scenes[key] = {};
           if (IMAGE_EXTS.has(ext)) {
-            scenes[key].image = `/scenes/${storyId}/${file}`;
+            scenes[key].image = `${BASE}/scenes/${storyId}/${file}`;
           } else if (VIDEO_EXTS.has(ext)) {
-            scenes[key].video = `/scenes/${storyId}/${file}`;
+            scenes[key].video = `${BASE}/scenes/${storyId}/${file}`;
           }
         }
       } catch {
@@ -75,7 +81,7 @@ function scan(): Manifest {
       const id = file.slice(0, dot);
       const ext = file.slice(dot).toLowerCase();
       if (IMAGE_EXTS.has(ext)) {
-        covers[id] = `/covers/${file}`;
+        covers[id] = `${BASE}/covers/${file}`;
       }
     }
   }
@@ -93,7 +99,7 @@ function scan(): Manifest {
           const key = file.slice(0, dot);
           const ext = file.slice(dot).toLowerCase();
           if (AUDIO_EXTS.has(ext)) {
-            music[`${storyId}/${key}`] = `/music/${storyId}/${file}`;
+            music[`${storyId}/${key}`] = `${BASE}/music/${storyId}/${file}`;
           }
         }
       } catch {

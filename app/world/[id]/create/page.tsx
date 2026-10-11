@@ -2,8 +2,6 @@ import { notFound } from "next/navigation";
 import { getWorld, getAllWorlds } from "@/lib/world";
 import CharacterCreator from "@/components/CharacterCreator";
 
-export const instant = false;
-
 export function generateStaticParams() {
   return getAllWorlds().map((w) => ({ id: w.id }));
 }

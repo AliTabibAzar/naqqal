@@ -10,6 +10,11 @@ export function getAllStories(): Story[] {
   return stories.filter((s) => !s.worldId);
 }
 
+export function getAllStoryIds(): string[] {
+  // همه‌ی داستان‌ها شامل فصل‌های دنیا — برای generateStaticParams (خروجی استاتیک)
+  return stories.map((s) => s.id);
+}
+
 export function getStory(id: string): Story | null {
   return stories.find((s) => s.id === id) ?? null;
 }

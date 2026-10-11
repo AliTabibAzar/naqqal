@@ -63,10 +63,19 @@ export default function Typewriter({
     let raf = 0;
     let last = performance.now();
     const loop = (now: number) => {
-      if (now - last >= effectiveSpeed) {
-        last = now;
-        idx.current += 1;
-        setShown(text.slice(0, idx.current));
+      const elapsed = now - last;
+      if (elapsed >= effectiveSpeed) {
+        // catch-up زمانی: اگه فریم افتاده، چند کاراکتر جلو می‌پریم
+        // تا سرعت wall-clock ثابت بمونه (مهم برای گوشی‌های کند)
+        const steps = Math.min(
+          Math.floor(elapsed / effectiveSpeed),
+          text.length - idx.current
+        );
+        if (steps > 0) {
+          last += steps * effectiveSpeed;
+          idx.current += steps;
+          setShown(text.slice(0, idx.current));
+        }
         if (idx.current >= text.length) {
           setDone(true);
           onDoneRef.current?.();

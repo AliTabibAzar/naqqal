@@ -122,6 +122,7 @@ export default function BackgroundArt({
               <img
                 src={layer.src}
                 alt=""
+                decoding="async"
                 className="absolute inset-0 h-full w-full object-cover opacity-55"
                 onError={() => markFailed(layer.src!)}
               />

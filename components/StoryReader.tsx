@@ -67,7 +67,6 @@ export default function StoryReader({
   const [ttsOn, setTtsOn] = useState(false);
   const [showMap, setShowMap] = useState(false);
   const [showTitle, setShowTitle] = useState<string | null>(null);
-  const [textDone, setTextDone] = useState(false);
   const [diceRolling, setDiceRolling] = useState(false);
   const [diceResult, setDiceResult] = useState<number | null>(null);
   const [timerLeft, setTimerLeft] = useState<number | null>(null);
@@ -325,7 +324,6 @@ export default function StoryReader({
 
   // choice timer
   useEffect(() => {
-    setTextDone(false);
     setDiceResult(null);
     if (node.timer && node.choices.length > 0 && !node.death && !node.ending) {
       setTimerLeft(node.timer);
@@ -536,15 +534,14 @@ export default function StoryReader({
 
         <Typewriter
           text={interpolate(node.text, character)}
-          onDone={() => setTextDone(true)}
           className="mb-8"
           glitch={intense && Boolean(fx?.glitchText)}
           adrenaline={intense && Boolean(fx?.adrenaline)}
           speed={18}
         />
 
-        {/* timer */}
-        {timerLeft !== null && textDone && !dead && !ending && (
+        {/* timer — از لحظه‌ی ورود می‌شمره، هم‌زمان با نمایش انتخاب‌ها */}
+        {timerLeft !== null && !dead && !ending && (
           <div className="mb-4 flex items-center gap-3">
             <div className="h-1.5 flex-1 rounded-full bg-panel overflow-hidden">
               <div
@@ -556,8 +553,8 @@ export default function StoryReader({
           </div>
         )}
 
-        {/* choices */}
-        {textDone && !dead && !ending && node.choices.length > 0 && (
+        {/* choices — فوری نمایش داده می‌شن؛ تایپ متن مستقل ادامه داره */}
+        {!dead && !ending && node.choices.length > 0 && (
           <div className="flex flex-col gap-3">
             {node.choices.map((c, i) => {
               const ok = available(c);

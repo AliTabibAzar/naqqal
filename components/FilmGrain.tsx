@@ -9,6 +9,7 @@ import { useEffect, useState } from "react";
  */
 export default function FilmGrain({ enabled = true }: { enabled?: boolean }) {
   const [reduced, setReduced] = useState(false);
+  const [smallScreen, setSmallScreen] = useState(false);
 
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -16,10 +17,18 @@ export default function FilmGrain({ enabled = true }: { enabled?: boolean }) {
     setReduced(mq.matches);
     const handler = (e: MediaQueryListEvent) => setReduced(e.matches);
     mq.addEventListener("change", handler);
-    return () => mq.removeEventListener("change", handler);
+    // گرین روی صفحه‌ی کوچیک خاموش — feTurbulence تمام‌صفحه GPU گوشی رو خفه می‌کنه
+    const sq = window.matchMedia("(max-width: 768px)");
+    setSmallScreen(sq.matches);
+    const shandler = (e: MediaQueryListEvent) => setSmallScreen(e.matches);
+    sq.addEventListener("change", shandler);
+    return () => {
+      mq.removeEventListener("change", handler);
+      sq.removeEventListener("change", shandler);
+    };
   }, []);
 
-  if (!enabled || reduced) return null;
+  if (!enabled || reduced || smallScreen) return null;
 
   return (
     <div aria-hidden className="pointer-events-none fixed inset-0 z-[60] mix-blend-overlay">

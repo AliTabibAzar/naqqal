@@ -143,7 +143,12 @@ export default function ParticleCanvas({
     let h = 0;
     let raf = 0;
     let t = 0;
-    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    // موبایل: DPR کمتر + ذرات کمتر (متناسب با مساحت صفحه)
+    const smallScreen = window.innerWidth < 768;
+    const dpr = Math.min(window.devicePixelRatio || 1, smallScreen ? 1.5 : 2);
+    const count = smallScreen
+      ? Math.max(12, Math.floor(cfg.count / 4))
+      : cfg.count;
     const parts: P[] = [];
 
     const resize = () => {
@@ -158,7 +163,7 @@ export default function ParticleCanvas({
     resize();
     window.addEventListener("resize", resize);
 
-    for (let i = 0; i < cfg.count; i++) {
+    for (let i = 0; i < count; i++) {
       const p = cfg.spawn(w, h, t);
       p.life = Math.random() * p.maxLife;
       parts.push(p);

@@ -21,15 +21,34 @@ function safeParse(raw: string | null): Library {
   }
 }
 
+function emptyLibrary(): Library {
+  return { stories: {}, worlds: {}, achievements: [] };
+}
+
+// fallback حافظه‌ای اگه storage در دسترس نباشه
+// (حالت ناشناس / مرورگرهای محدودکننده که getItem/setItem شون throw می‌کنه)
+let memLib: Library | null = null;
+
 export function loadLibrary(): Library {
-  if (typeof window === "undefined")
-    return { stories: {}, worlds: {}, achievements: [] };
-  return safeParse(localStorage.getItem(KEY));
+  if (typeof window === "undefined") return emptyLibrary();
+  try {
+    const lib = safeParse(localStorage.getItem(KEY));
+    memLib = lib;
+    return lib;
+  } catch {
+    // storage بسته‌ست — با حافظه ادامه بده تا اپ کرش نکنه (فقط ذخیره نمی‌مونه)
+    return memLib ?? emptyLibrary();
+  }
 }
 
 function saveLibrary(lib: Library) {
+  memLib = lib;
   if (typeof window === "undefined") return;
-  localStorage.setItem(KEY, JSON.stringify(lib));
+  try {
+    localStorage.setItem(KEY, JSON.stringify(lib));
+  } catch {
+    /* ذخیره نمی‌مونه ولی اپ کار می‌کنه */
+  }
 }
 
 export function getProgress(storyId: string): Progress | null {

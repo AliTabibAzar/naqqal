@@ -1,12 +1,18 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
 export default function TorchLight({ enabled }: { enabled: boolean }) {
   const ref = useRef<HTMLDivElement>(null);
+  const [isTouch, setIsTouch] = useState(false);
 
   useEffect(() => {
-    if (!enabled) return;
+    // روی تاچ، ماسک تاریکیِ دنبال‌کننده‌ی انگشت بی‌فایده و پرهزینه‌ست
+    setIsTouch(window.matchMedia("(pointer: coarse)").matches);
+  }, []);
+
+  useEffect(() => {
+    if (!enabled || isTouch) return;
     const el = ref.current;
     if (!el) return;
 
@@ -30,9 +36,9 @@ export default function TorchLight({ enabled }: { enabled: boolean }) {
       window.removeEventListener("mousemove", onMove);
       window.removeEventListener("touchmove", onTouch);
     };
-  }, [enabled]);
+  }, [enabled, isTouch]);
 
-  if (!enabled) return null;
+  if (!enabled || isTouch) return null;
 
   return (
     <div
